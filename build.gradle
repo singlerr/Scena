@@ -32,13 +32,13 @@ subprojects { Project subProject ->
         jarTask.archiveBaseName = "${rootProject.name}-${subProject.name}"
         jarTask.manifest.attributes([
                 "Specification-Title"     : rootProject.name,
-                "Specification-Vendor"    : rootProject.owner,
+                "Specification-Vendor"    : rootProject.projectOwner,
                 "Specification-Version"   : rootProject.version,
-                "Implementation-Title"    : rootProject.name,
-                "Implementation-Version"  : rootProject.version,
-                "Implementation-Vendor"   : rootProject.owner,
+                "Implementation-Title"    : subProject.name,
+                "Implementation-Version"  : subProject.version,
+                "Implementation-Vendor"   : subProject.projectOwner,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "Automatic-Module-Name"   : subProject.name.toLowerCase().replace("-", "_"),
+                "Automatic-Module-Name"   : rootProject.name.toLowerCase().replace("-", "_") + "_" + subProject.name.toLowerCase().replace("-", "_"),
                 "FMLModType": "GAMELIBRARY"
         ])
         jarTask.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
