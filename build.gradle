@@ -203,6 +203,8 @@ subprojects { Project subProject ->
             subProject.publishing {
                 publications {
                     mavenJava(MavenPublication) { pub ->
+                        artifactId "${rootProject.name}-${subProject.name}"
+
                         from subProject.components.java
 
                         pom {
