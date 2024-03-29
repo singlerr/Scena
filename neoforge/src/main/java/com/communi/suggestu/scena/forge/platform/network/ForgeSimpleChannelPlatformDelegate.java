@@ -108,6 +108,7 @@ public class ForgeSimpleChannelPlatformDelegate implements INetworkChannel, IPay
         private Object msg;
 
         public Payload(Object msg) {
+            this.id = getSpec(msg.getClass()).id;
             this.msg = msg;
         }
 
