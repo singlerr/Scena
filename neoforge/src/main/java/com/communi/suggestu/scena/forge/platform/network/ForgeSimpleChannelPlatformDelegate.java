@@ -34,7 +34,6 @@ public class ForgeSimpleChannelPlatformDelegate implements INetworkChannel, IPay
             final FriendlyByteBuf friendlyByteBuf
     ) {
         final NetworkMessageSpecification<T> spec = (NetworkMessageSpecification<T>) getSpec(message.getClass());
-        friendlyByteBuf.writeVarInt(spec.id);
         spec.serializer.accept(message, friendlyByteBuf);
     }
 
