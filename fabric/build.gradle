@@ -6,6 +6,13 @@ project.ext.remapTaskClass = Class.forName('net.fabricmc.loom.task.RemapJarTask'
 
 project.addCoreProject()
 
+def remappedAttribute = Attribute.of("net.fabric.loom.remapped", Boolean)
+project.configurations.modImplementation {
+    attributes {
+        attribute(remappedAttribute, true)
+    }
+}
+
 project.dependencies.minecraft "com.mojang:minecraft:${project.minecraftVersion}"
 project.dependencies.modImplementation "net.fabricmc:fabric-loader:${project.fabricLoaderVersion}"
 project.dependencies.modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}+${project.minecraftVersion}"
@@ -22,12 +29,12 @@ project.loom.accessWidenerPath = project(':common').file("scena.accesswidener")
 project.tasks.processResources.from project(':common').file("scena.accesswidener")
 
 def interpolationProperties = [
-        'version'                 : "${rootProject.version}",
-        'mcVersion'               : "${project.getAllSupportedMcVersionsAsStringArray()}",
+        'version'                  : "${rootProject.version}",
+        'mcVersion'                : "${project.getAllSupportedMcVersionsAsStringArray()}",
         'saeculariaCaudicesVersion': "${project.saeculariaCaudicesVersion}"
 ]
 project.tasks.processResources.filesMatching("fabric.mod.json") {
-    expand (interpolationProperties)
+    expand(interpolationProperties)
 }
 project.tasks.processResources.inputs.properties(interpolationProperties)
 
