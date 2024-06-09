@@ -1,5 +1,6 @@
 package com.communi.suggestu.scena.fabric.platform.entity;
 
+import com.communi.suggestu.scena.core.entity.block.BlockEntityChunkStorage;
 import com.communi.suggestu.scena.core.entity.block.IBlockEntityPositionManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -26,6 +27,11 @@ public class FabricBlockEntityPositionManager implements IBlockEntityPositionMan
         return (IFabricBlockEntityPositionHolder) level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
     }
 
+    @Nullable
+    private IFabricBlockEntityPositionHolder getHolder(BlockEntity blockEntity){
+        return (IFabricBlockEntityPositionHolder) ((BlockEntityChunkStorage) blockEntity).getOwnerChunk();
+    }
+
     @Override
     public Set<BlockPos> getPositions(Class<? extends BlockEntity> blockEntityClass, LevelReader level, ChunkPos chunkPos) {
         final IFabricBlockEntityPositionHolder holder = getHolder(level, chunkPos);
@@ -41,7 +47,11 @@ public class FabricBlockEntityPositionManager implements IBlockEntityPositionMan
         if (blockEntity.getLevel() == null)
             throw new IllegalArgumentException("Block entity must be in a level to be added to the position manager");
 
-        final IFabricBlockEntityPositionHolder holder = getHolder(blockEntity.getLevel(), new ChunkPos(blockEntity.getBlockPos()));
+        final IFabricBlockEntityPositionHolder holder = getHolder(blockEntity);
+        if(holder == null){
+            getHolder(blockEntity.getLevel(), new ChunkPos(blockEntity.getBlockPos()));
+        }
+
         if (holder == null) {
             return;
         }
@@ -54,7 +64,11 @@ public class FabricBlockEntityPositionManager implements IBlockEntityPositionMan
         if (blockEntity.getLevel() == null)
             throw new IllegalArgumentException("Block entity must be in a level to be removed from the position manager");
 
-        final IFabricBlockEntityPositionHolder holder = getHolder(blockEntity.getLevel(), new ChunkPos(blockEntity.getBlockPos()));
+        IFabricBlockEntityPositionHolder holder = getHolder(blockEntity);
+        if(holder == null){
+            holder = getHolder(blockEntity.getLevel(), new ChunkPos(blockEntity.getBlockPos()));
+        }
+
         if (holder == null) {
             return;
         }

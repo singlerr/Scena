@@ -4,6 +4,7 @@
   "package": "com.communi.suggestu.scena.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "platform.common.BlockEntityMixin",
     "platform.common.ChunkAccessMixin",
     "platform.common.ChunkMapChunkLoadMixin",
     "platform.common.ItemEntityEventMixin",
